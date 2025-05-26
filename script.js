@@ -507,4 +507,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+// 添加标点优化复选框的互斥逻辑
+document.addEventListener('DOMContentLoaded', function() {
+    const chinesePunctuation = document.getElementById('chinesePunctuation');
+    const englishPunctuation = document.getElementById('englishPunctuation');
+
+    if (chinesePunctuation && englishPunctuation) {
+        // 监听中文标点优化复选框变化
+        chinesePunctuation.addEventListener('change', function() {
+            if (this.checked) {
+                englishPunctuation.checked = false;
+            }
+        });
+
+        // 监听英文标点优化复选框变化
+        englishPunctuation.addEventListener('change', function() {
+            if (this.checked) {
+                chinesePunctuation.checked = false;
+            }
+        });
+    }
 }); 
