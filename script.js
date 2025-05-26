@@ -8,145 +8,201 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearBtn = document.getElementById('clearBtn');
     const themeToggle = document.getElementById('themeToggle');
 
+    // 检查必要的DOM元素是否存在
+    if (!inputText || !outputText || !charCount || !processBtn || !copyBtn || !clearBtn || !themeToggle) {
+        console.error('必要的DOM元素未找到');
+        return;
+    }
+
+    // 安全地更新元素内容
+    function safeUpdateElement(element, content) {
+        if (element && element.textContent !== undefined) {
+            element.textContent = content;
+        }
+    }
+
+    // 安全地更新元素属性
+    function safeSetAttribute(element, attr, value) {
+        if (element && element.setAttribute) {
+            element.setAttribute(attr, value);
+        }
+    }
+
+    // 安全地添加/移除类
+    function safeToggleClass(element, className, add) {
+        if (element && element.classList) {
+            if (add) {
+                element.classList.add(className);
+            } else {
+                element.classList.remove(className);
+            }
+        }
+    }
+
     // 主题切换
     themeToggle.addEventListener('click', () => {
-        const isDark = document.body.getAttribute('data-theme') === 'dark';
-        document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-        themeToggle.textContent = isDark ? '🌙' : '☀️';
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        try {
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            safeSetAttribute(document.body, 'data-theme', isDark ? 'light' : 'dark');
+            safeUpdateElement(themeToggle, isDark ? '🌙' : '☀️');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        } catch (error) {
+            console.error('主题切换失败:', error);
+        }
     });
 
     // 初始化主题
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.body.setAttribute('data-theme', savedTheme);
-    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    try {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        safeSetAttribute(document.body, 'data-theme', savedTheme);
+        safeUpdateElement(themeToggle, savedTheme === 'dark' ? '☀️' : '🌙');
+    } catch (error) {
+        console.error('主题初始化失败:', error);
+    }
 
     // 字数统计
     inputText.addEventListener('input', () => {
-        charCount.textContent = inputText.value.length;
+        try {
+            safeUpdateElement(charCount, inputText.value.length);
+        } catch (error) {
+            console.error('字数统计更新失败:', error);
+        }
     });
 
     // 文本处理函数
     function processText(text) {
-        // 空格处理
-        const spaceOption = document.querySelector('input[name="spaceOption"]:checked').value;
-        switch (spaceOption) {
-            case 'remove':
-                text = text.replace(/\s+/g, '');
-                break;
-            case 'single':
-                // 只处理连续的多个空格，保留单个空格
-                text = text.replace(/[ ]{2,}/g, ' ');
-                break;
-        }
+        if (!text) return '';
 
-        // 换行处理
-        const lineOption = document.querySelector('input[name="lineOption"]:checked').value;
-        switch (lineOption) {
-            case 'remove':
-                text = text.replace(/\n+/g, '');
-                break;
-            case 'single':
-                // 只处理连续的多个换行，保留单个换行
-                text = text.replace(/\n{2,}/g, '\n');
-                break;
-        }
+        try {
+            // 空格处理
+            const spaceOption = document.querySelector('input[name="spaceOption"]:checked')?.value;
+            if (spaceOption) {
+                switch (spaceOption) {
+                    case 'remove':
+                        text = text.replace(/\s+/g, '');
+                        break;
+                    case 'single':
+                        text = text.replace(/[ ]{2,}/g, ' ');
+                        break;
+                }
+            }
 
-        // 特殊符号处理
-        const symbolOption = document.querySelector('input[name="symbolOption"]:checked').value;
-        if (symbolOption === 'remove') {
-            text = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s.,!?;:，。！？；：]/g, '');
-        } else if (symbolOption === 'smart') {
-            // 全角转半角
-            text = text.replace(/，/g, ',')
-                      .replace(/。/g, '.')
-                      .replace(/！/g, '!')
-                      .replace(/？/g, '?')
-                      .replace(/；/g, ';')
-                      .replace(/：/g, ':')
-                      .replace(/（/g, '(')
-                      .replace(/）/g, ')')
-                      .replace(/【/g, '[')
-                      .replace(/】/g, ']')
-                      .replace(/《/g, '<')
-                      .replace(/》/g, '>');
+            // 换行处理
+            const lineOption = document.querySelector('input[name="lineOption"]:checked')?.value;
+            if (lineOption) {
+                switch (lineOption) {
+                    case 'remove':
+                        text = text.replace(/\n+/g, '');
+                        break;
+                    case 'single':
+                        text = text.replace(/\n{2,}/g, '\n');
+                        break;
+                }
+            }
+
+            // 特殊符号处理
+            const symbolOption = document.querySelector('input[name="symbolOption"]:checked')?.value;
+            if (symbolOption) {
+                if (symbolOption === 'remove') {
+                    text = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s.,!?;:，。！？；：]/g, '');
+                } else if (symbolOption === 'smart') {
+                    text = text.replace(/，/g, ',')
+                              .replace(/。/g, '.')
+                              .replace(/！/g, '!')
+                              .replace(/？/g, '?')
+                              .replace(/；/g, ';')
+                              .replace(/：/g, ':')
+                              .replace(/（/g, '(')
+                              .replace(/）/g, ')')
+                              .replace(/【/g, '[')
+                              .replace(/】/g, ']')
+                              .replace(/《/g, '<')
+                              .replace(/》/g, '>')
+                              .replace(/[""''「」『』]/g, '"')
+                              .replace(/\.{3,}/g, '…');
+                }
+            }
+
+            // 标点优化
+            const chinesePunctuation = document.getElementById('chinesePunctuation');
+            const englishPunctuation = document.getElementById('englishPunctuation');
             
-            // 统一引号
-            text = text.replace(/[""''「」『』]/g, '"');
-            // 省略号规范化
-            text = text.replace(/\.{3,}/g, '…');
-        }
+            if (chinesePunctuation?.checked) {
+                text = text.replace(/([^a-zA-Z0-9])([,\.!?;:])/g, '$1，');
+            }
+            if (englishPunctuation?.checked) {
+                text = text.replace(/([a-zA-Z0-9])([，。！？；：])/g, '$1,');
+            }
 
-        // 标点优化
-        if (document.getElementById('chinesePunctuation').checked) {
-            text = text.replace(/([^a-zA-Z0-9])([,\.!?;:])/g, '$1，');
-        }
-        if (document.getElementById('englishPunctuation').checked) {
-            text = text.replace(/([a-zA-Z0-9])([，。！？；：])/g, '$1,');
-        }
+            // 段落整理
+            const indentFirstLine = document.getElementById('indentFirstLine');
+            const uniformSpacing = document.getElementById('uniformSpacing');
+            
+            if (indentFirstLine?.checked) {
+                text = text.replace(/^/gm, '    ');
+            }
+            if (uniformSpacing?.checked) {
+                text = text.replace(/\n{3,}/g, '\n\n');
+            }
 
-        // 段落整理
-        if (document.getElementById('indentFirstLine').checked) {
-            text = text.replace(/^/gm, '    ');
+            return text;
+        } catch (error) {
+            console.error('文本处理失败:', error);
+            return text;
         }
-        if (document.getElementById('uniformSpacing').checked) {
-            text = text.replace(/\n{3,}/g, '\n\n');
-        }
-
-        return text;
     }
 
     // 处理按钮点击事件
     processBtn.addEventListener('click', () => {
-        // 检查输入是否为空
-        if (!inputText.value.trim()) {
-            alert('请输入需要清洗的文本内容！');
-            return;
-        }
-
-        // 添加加载状态
-        processBtn.disabled = true;
-        processBtn.textContent = '处理中...';
-        
-        // 使用 setTimeout 模拟异步处理，避免界面卡顿
-        setTimeout(() => {
-            try {
-                const processedText = processText(inputText.value);
-                outputText.value = processedText;
-                
-                // 显示成功提示
-                processBtn.textContent = '清洗完成！';
-                processBtn.classList.add('success');
-                
-                // 2秒后恢复按钮状态
-                setTimeout(() => {
-                    processBtn.textContent = '一键清洗';
-                    processBtn.disabled = false;
-                    processBtn.classList.remove('success');
-                }, 2000);
-            } catch (error) {
-                console.error('处理失败:', error);
-                alert('文本处理失败，请重试！');
-                processBtn.textContent = '一键清洗';
-                processBtn.disabled = false;
+        try {
+            if (!inputText.value.trim()) {
+                alert('请输入需要清洗的文本内容！');
+                return;
             }
-        }, 100);
+
+            processBtn.disabled = true;
+            safeUpdateElement(processBtn, '处理中...');
+            
+            setTimeout(() => {
+                try {
+                    const processedText = processText(inputText.value);
+                    outputText.value = processedText;
+                    
+                    safeUpdateElement(processBtn, '清洗完成！');
+                    safeToggleClass(processBtn, 'success', true);
+                    
+                    setTimeout(() => {
+                        safeUpdateElement(processBtn, '一键清洗');
+                        processBtn.disabled = false;
+                        safeToggleClass(processBtn, 'success', false);
+                    }, 2000);
+                } catch (error) {
+                    console.error('处理失败:', error);
+                    alert('文本处理失败，请重试！');
+                    safeUpdateElement(processBtn, '一键清洗');
+                    processBtn.disabled = false;
+                }
+            }, 100);
+        } catch (error) {
+            console.error('按钮点击处理失败:', error);
+        }
     });
 
     // 复制按钮点击事件
     copyBtn.addEventListener('click', async () => {
-        if (!outputText.value) {
-            alert('没有可复制的内容！');
-            return;
-        }
-
         try {
+            if (!outputText.value) {
+                alert('没有可复制的内容！');
+                return;
+            }
+
             await navigator.clipboard.writeText(outputText.value);
-            copyBtn.textContent = '已复制！';
-            copyBtn.classList.add('success');
+            safeUpdateElement(copyBtn, '已复制！');
+            safeToggleClass(copyBtn, 'success', true);
+            
             setTimeout(() => {
-                copyBtn.textContent = '复制结果';
-                copyBtn.classList.remove('success');
+                safeUpdateElement(copyBtn, '复制结果');
+                safeToggleClass(copyBtn, 'success', false);
             }, 2000);
         } catch (err) {
             console.error('复制失败:', err);
@@ -156,8 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 清空按钮点击事件
     clearBtn.addEventListener('click', () => {
-        inputText.value = '';
-        outputText.value = '';
-        charCount.textContent = '0';
+        try {
+            inputText.value = '';
+            outputText.value = '';
+            safeUpdateElement(charCount, '0');
+        } catch (error) {
+            console.error('清空操作失败:', error);
+        }
     });
 }); 
