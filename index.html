@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>文章清洗工具</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -10,7 +13,7 @@
     <div class="container">
         <header>
             <h1>文章清洗工具</h1>
-            <button id="themeToggle" class="theme-toggle">🌙</button>
+            <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌙</button>
         </header>
 
         <main>
@@ -20,7 +23,7 @@
                         <h2>输入文本</h2>
                         <span class="char-count">字数：<span id="inputCharCount">0</span></span>
                     </div>
-                    <textarea id="inputText" placeholder="请在此粘贴或输入需要清洗的文章内容..."></textarea>
+                    <textarea id="inputText" placeholder="请在此粘贴或输入需要清洗的文章内容..." aria-label="输入文本"></textarea>
                 </div>
 
                 <div class="output-section">
@@ -28,7 +31,7 @@
                         <h2>清洗结果</h2>
                         <span class="char-count">字数：<span id="outputCharCount">0</span></span>
                     </div>
-                    <textarea id="outputText" readonly placeholder="清洗后的文本将显示在这里..."></textarea>
+                    <textarea id="outputText" readonly placeholder="清洗后的文本将显示在这里..." aria-label="清洗结果"></textarea>
                 </div>
             </div>
 
@@ -38,29 +41,29 @@
                     <div class="option-row">
                         <label>
                             <input type="radio" name="spaceOption" value="remove" checked>
-                            清除空格
+                            <span>清除空格</span>
                         </label>
                         <label>
                             <input type="radio" name="spaceOption" value="single">
-                            保留单个空格
+                            <span>保留单个空格</span>
                         </label>
                         <label>
                             <input type="radio" name="spaceOption" value="keep">
-                            保持原空格
+                            <span>保持原空格</span>
                         </label>
                     </div>
                     <div class="option-row">
                         <label>
                             <input type="radio" name="lineOption" value="remove">
-                            清除换行
+                            <span>清除换行</span>
                         </label>
                         <label>
                             <input type="radio" name="lineOption" value="single" checked>
-                            保留单个换行
+                            <span>保留单个换行</span>
                         </label>
                         <label>
                             <input type="radio" name="lineOption" value="keep">
-                            保持原换行
+                            <span>保持原换行</span>
                         </label>
                     </div>
                 </div>
@@ -70,15 +73,15 @@
                     <div class="option-row">
                         <label>
                             <input type="radio" name="symbolOption" value="remove">
-                            清除特殊符号
+                            <span>清除特殊符号</span>
                         </label>
                         <label>
                             <input type="radio" name="symbolOption" value="smart" checked>
-                            智能转换符号
+                            <span>智能转换符号</span>
                         </label>
                         <label>
                             <input type="radio" name="symbolOption" value="keep">
-                            保持原符号
+                            <span>保持原符号</span>
                         </label>
                     </div>
                 </div>
@@ -88,11 +91,11 @@
                     <div class="option-row">
                         <label>
                             <input type="checkbox" id="chinesePunctuation" checked>
-                            中文标点优化
+                            <span>中文标点优化</span>
                         </label>
                         <label>
                             <input type="checkbox" id="englishPunctuation" checked>
-                            英文标点优化
+                            <span>英文标点优化</span>
                         </label>
                     </div>
                 </div>
@@ -102,20 +105,20 @@
                     <div class="option-row">
                         <label>
                             <input type="checkbox" id="indentFirstLine">
-                            首行缩进
+                            <span>首行缩进</span>
                         </label>
                         <label>
                             <input type="checkbox" id="uniformSpacing" checked>
-                            统一段落间距
+                            <span>统一段落间距</span>
                         </label>
                     </div>
                 </div>
+            </div>
 
-                <div class="button-group">
-                    <button id="processBtn" class="primary-btn">一键清洗</button>
-                    <button id="copyBtn" class="secondary-btn">复制结果</button>
-                    <button id="clearBtn" class="secondary-btn">清空内容</button>
-                </div>
+            <div class="button-group">
+                <button id="processBtn" class="primary-btn" aria-label="一键清洗">一键清洗</button>
+                <button id="copyBtn" class="secondary-btn" aria-label="复制结果">复制结果</button>
+                <button id="clearBtn" class="secondary-btn" aria-label="清空内容">清空内容</button>
             </div>
         </main>
     </div>
