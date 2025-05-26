@@ -2,14 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM 元素
     const inputText = document.getElementById('inputText');
     const outputText = document.getElementById('outputText');
-    const charCount = document.getElementById('charCount');
+    const inputCharCount = document.getElementById('inputCharCount');
+    const outputCharCount = document.getElementById('outputCharCount');
     const processBtn = document.getElementById('processBtn');
     const copyBtn = document.getElementById('copyBtn');
     const clearBtn = document.getElementById('clearBtn');
     const themeToggle = document.getElementById('themeToggle');
 
     // 检查必要的DOM元素是否存在
-    if (!inputText || !outputText || !charCount || !processBtn || !copyBtn || !clearBtn || !themeToggle) {
+    if (!inputText || !outputText || !inputCharCount || !outputCharCount || !processBtn || !copyBtn || !clearBtn || !themeToggle) {
         console.error('必要的DOM元素未找到');
         return;
     }
@@ -39,6 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 更新字符统计
+    function updateCharCount(text, element) {
+        safeUpdateElement(element, text.length);
+    }
+
     // 主题切换
     themeToggle.addEventListener('click', () => {
         try {
@@ -63,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 字数统计
     inputText.addEventListener('input', () => {
         try {
-            safeUpdateElement(charCount, inputText.value.length);
+            updateCharCount(inputText.value, inputCharCount);
         } catch (error) {
             console.error('字数统计更新失败:', error);
         }
@@ -74,15 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return '';
 
         try {
+            // 统一换行符
+            text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
             // 空格处理
             const spaceOption = document.querySelector('input[name="spaceOption"]:checked')?.value;
             if (spaceOption) {
                 switch (spaceOption) {
                     case 'remove':
-                        text = text.replace(/\s+/g, '');
+                        text = text.replace(/[ \t]+/g, '');
                         break;
                     case 'single':
-                        text = text.replace(/[ ]{2,}/g, ' ');
+                        text = text.replace(/[ \t]+/g, ' ');
                         break;
                 }
             }
@@ -96,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         break;
                     case 'single':
                         text = text.replace(/\n{2,}/g, '\n');
+                        text = text.split('\n').map(line => line.trim()).join('\n');
                         break;
                 }
             }
@@ -139,10 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const uniformSpacing = document.getElementById('uniformSpacing');
             
             if (indentFirstLine?.checked) {
-                text = text.replace(/^/gm, '    ');
+                text = text.split('\n').map(line => {
+                    return line.trim() ? '    ' + line : line;
+                }).join('\n');
             }
             if (uniformSpacing?.checked) {
                 text = text.replace(/\n{3,}/g, '\n\n');
+                text = text.trim();
             }
 
             return text;
@@ -167,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const processedText = processText(inputText.value);
                     outputText.value = processedText;
+                    updateCharCount(processedText, outputCharCount);
                     
                     safeUpdateElement(processBtn, '清洗完成！');
                     safeToggleClass(processBtn, 'success', true);
@@ -215,7 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             inputText.value = '';
             outputText.value = '';
-            safeUpdateElement(charCount, '0');
+            updateCharCount('', inputCharCount);
+            updateCharCount('', outputCharCount);
         } catch (error) {
             console.error('清空操作失败:', error);
         }
