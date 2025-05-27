@@ -5,8 +5,7 @@
 ## 在线使用
 
 访问以下地址使用在线版本：
-- 主站：https://yourusername.github.io/text-cleaner/
-- 备用站：https://text-cleaner.netlify.app/
+- 主站：https://www.xiaomingmiaomiaowu.top
 
 ## 功能特点
 
