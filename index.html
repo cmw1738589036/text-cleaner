@@ -10,91 +10,109 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="components.css">
 </head>
 <body>
+    <nav class="navbar">
+        <a href="index.html" class="home-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path d="M9 22V12h6v10"/>
+            </svg>
+            <span>首页</span>
+        </a>
+        <div class="title-section">
+            <h1 class="title">小铭妙妙屋</h1>
+            <p class="subtitle">实用工具集合</p>
+        </div>
+        <button class="btn btn-secondary" id="themeToggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </nav>
+
     <div class="container">
-        <header class="main-header">
-            <div class="profile-section">
-                <div class="avatar">
-                    <img src="avatar.jpg" alt="小铭头像" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAzYzEuNjYgMCAzIDEuMzQgMyAzcy0xLjM0IDMtMyAzLTMtMS4zNC0zLTMgMS4zNC0zIDMtM3ptMCAxNC4yYy0yLjUgMC00LjcxLTEuMjgtNi0zLjIyLjAzLTEuOTkgNC0zLjA4IDYtMy4wOCAxLjk5IDAgNS45NyAxLjA5IDYgMy4wOC0xLjI5IDEuOTQtMy41IDMuMjItNiAzLjIyeiIvPjwvc3ZnPg=='">
-                </div>
-                <div class="header-text">
-                    <h1>小铭妙妙屋</h1>
-                    <p class="subtitle">实用工具集合</p>
-                </div>
-            </div>
-            <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌙</button>
-        </header>
-
         <main class="home-main">
-            <section class="hero-section">
-                <div class="hero-content">
-                    <h2>欢迎来到小铭妙妙屋</h2>
-                    <p>这里收集了一些实用的小工具，希望能帮助到你</p>
-                </div>
-            </section>
-
             <section class="tools-section">
-                <h3 class="section-title">实用工具</h3>
+                <h3 class="title title-h3 section-title">实用工具</h3>
                 <div class="tools-grid">
-                    <a href="tools/article-cleaner.html" class="tool-card">
-                        <div class="tool-icon">
+                    <a href="tools/article-cleaner.html" class="card tool-card">
+                        <div class="icon tool-icon">
                             <svg viewBox="0 0 24 24" width="32" height="32">
                                 <path fill="currentColor" d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
                             </svg>
                         </div>
                         <div class="tool-info">
-                            <h2>文章清洗工具</h2>
+                            <h2 class="title title-h2">文章清洗工具</h2>
                             <p>一键清理文章格式，优化排版，让文章更整洁</p>
                         </div>
                     </a>
-                    <!-- 后续可以在这里添加更多工具卡片 -->
+                    <a href="tools/prompt-library.html" class="card tool-card">
+                        <div class="icon tool-icon">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 10h9v2H5zm0-3h9v2H5zm0 6h9v2H5zm14 0h-2v2h2zm0-3h-2v2h2zm0-3h-2v2h2z"/>
+                            </svg>
+                        </div>
+                        <div class="tool-info">
+                            <h2 class="title title-h2">高质量提示词库</h2>
+                            <p>多级分类的高质量提示词集合，支持搜索、收藏和分享</p>
+                        </div>
+                    </a>
                 </div>
             </section>
 
             <section class="features-section">
-                <h3 class="section-title">特色功能</h3>
+                <h3 class="title title-h3 section-title">特色功能</h3>
                 <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">
+                    <div class="card feature-card">
+                        <div class="icon feature-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
-                        <h4>简单易用</h4>
+                        <h4 class="title title-h3">简单易用</h4>
                         <p>界面简洁，操作直观，无需学习即可上手</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
+                    <div class="card feature-card">
+                        <div class="icon feature-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
                             </svg>
                         </div>
-                        <h4>安全可靠</h4>
+                        <h4 class="title title-h3">安全可靠</h4>
                         <p>本地处理，保护隐私，无需上传数据</p>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">
+                    <div class="card feature-card">
+                        <div class="icon feature-icon">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
                             </svg>
                         </div>
-                        <h4>持续更新</h4>
+                        <h4 class="title title-h3">持续更新</h4>
                         <p>定期更新功能，不断优化体验</p>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="main-footer">
+        <footer class="footer">
             <p>© 2024 小铭妙妙屋 - 让生活更简单</p>
         </footer>
     </div>
-    <button id="backToTop" class="back-to-top" aria-label="回到顶部">
+    <button id="backToTop" class="btn btn-primary back-to-top" aria-label="回到顶部">
         <svg viewBox="0 0 24 24" width="24" height="24">
             <path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
         </svg>
     </button>
     <script src="script.js"></script>
+    <style>
+    .hero-title {
+        color: #fff !important;
+    }
+    .hero-desc {
+        color: #fff;
+    }
+    </style>
 </body>
 </html> 

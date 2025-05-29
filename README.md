@@ -1,11 +1,12 @@
-# 文章清洗工具
+# 高质量提示词库 & 文章清洗工具
 
 一个纯前端的文章格式清洗工具，无需后端支持，直接在浏览器中运行。
 
 ## 在线使用
 
 访问以下地址使用在线版本：
-- 主站：https://www.xiaomingmiaomiaowu.top
+- 主站：https://yourusername.github.io/text-cleaner/
+- 备用站：https://text-cleaner.netlify.app/
 
 ## 功能特点
 
@@ -92,4 +93,42 @@ cd text-cleaner
 
 ## 许可证
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情 
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+
+## 本地开发与上线前准备
+
+### 1. 依赖安装
+```bash
+npm install
+```
+
+### 2. 配置API Key（智谱GLM）
+在项目根目录新建 `.env` 文件，内容如下：
+```
+ZHIPU_API_KEY=你的智谱API Key（格式如：f93c39a362e2465ca34384eb5cc1dbbb.myTCO6I28jmNURyt）
+```
+
+### 3. 启动Node代理服务
+```bash
+node proxy.js
+```
+
+### 4. 访问本地页面
+- 主页：http://localhost:3001
+- 提示词库：http://localhost:3001/tools/prompt-library.html
+- 文章清洗工具：http://localhost:3001/tools/article-cleaner.html
+
+### 5. 安全建议
+- `.env` 和 `node_modules/` 已加入 `.gitignore`，不会被上传到GitHub。
+- 请勿将API Key硬编码在代码中，务必用环境变量管理。
+- 上线到云平台时，在平台环境变量配置区填写 `ZHIPU_API_KEY`。
+
+### 6. 依赖
+- express
+- axios
+- cors
+- dotenv
+
+---
+
+如有问题请联系开发者或提交issue。 

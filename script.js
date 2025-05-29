@@ -214,11 +214,51 @@ document.addEventListener('DOMContentLoaded', function() {
                     text = text.trim();
                 }
 
+                // 自定义替换
+                const replaceEnter = document.getElementById('replaceEnter')?.checked;
+                const replaceEnterTo = document.getElementById('replaceEnterTo')?.value ?? '';
+                if (replaceEnter) {
+                    text = text.replace(/\r\n|\r|\n/g, replaceEnterTo);
+                }
+
+                const replaceSpace = document.getElementById('replaceSpace')?.checked;
+                const replaceSpaceTo = document.getElementById('replaceSpaceTo')?.value ?? '';
+                if (replaceSpace) {
+                    text = text.replace(/ /g, replaceSpaceTo);
+                }
+
+                const replaceTab = document.getElementById('replaceTab')?.checked;
+                const replaceTabTo = document.getElementById('replaceTabTo')?.value ?? '';
+                if (replaceTab) {
+                    text = text.replace(/\t/g, replaceTabTo);
+                }
+
+                // 自定义替换规则
+                const customReplacements = document.getElementById('customReplacements')?.value;
+                if (customReplacements) {
+                    try {
+                        const rules = customReplacements.split('\n').filter(rule => rule.trim());
+                        rules.forEach(rule => {
+                            const [search, replace] = rule.split('=>').map(s => s.trim());
+                            if (search && replace) {
+                                text = text.replace(new RegExp(escapeRegExp(search), 'g'), replace);
+                            }
+                        });
+                    } catch (error) {
+                        console.error('自定义替换规则处理失败:', error);
+                    }
+                }
+
                 return text;
             } catch (error) {
                 console.error('文本处理失败:', error);
                 return text;
             }
+        }
+
+        // 转义正则表达式特殊字符
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         }
 
         // 处理按钮点击事件
