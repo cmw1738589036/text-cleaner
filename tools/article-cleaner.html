@@ -10,22 +10,29 @@
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../components.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <a href="../index.html" class="home-link">
-                    <svg viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-                    </svg>
-                    小铭妙妙屋
-                </a>
-                <h1>文章清洗工具</h1>
-            </div>
-            <button id="themeToggle" class="theme-toggle" aria-label="切换主题">🌙</button>
-        </header>
+    <nav class="navbar">
+        <a href="../index.html" class="home-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path d="M9 22V12h6v10"/>
+            </svg>
+            <span>首页</span>
+        </a>
+        <div class="title-section">
+            <h1 class="title">文章清洗工具</h1>
+            <p class="subtitle">一键优化文章格式</p>
+        </div>
+        <button class="btn btn-secondary" id="themeToggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </nav>
 
+    <div class="container">
         <main>
             <!-- 输入区域 -->
             <section class="input-section">
@@ -120,7 +127,7 @@
                                 <input type="radio" name="symbolOption" value="remove">
                                 <span>清除所有特殊符号</span>
                             </label>
-                            <button class="help-btn" data-tooltip="清除所有非中文、英文、数字的符号" aria-label="查看清除所有特殊符号说明">
+                            <button class="help-btn" data-tooltip="清除所有非中文、英文、数字的符号（不包括中文和英文的逗号、句号）" aria-label="查看清除所有特殊符号说明">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>
@@ -131,7 +138,7 @@
                                 <input type="radio" name="symbolOption" value="smart">
                                 <span>智能转换符号</span>
                             </label>
-                            <button class="help-btn" data-tooltip="将全角符号转换为半角，统一引号，规范化省略号" aria-label="查看智能转换符号说明">
+                            <button class="help-btn" data-tooltip="将全角符号转换为半角，统一引号，规范化省略号（不包括中文和英文的逗号、句号）" aria-label="查看智能转换符号说明">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>
@@ -143,6 +150,84 @@
                                 <span>保持原符号</span>
                             </label>
                             <button class="help-btn" data-tooltip="保持原文中的符号不变" aria-label="查看保持原符号说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <h3>标点符号处理</h3>
+                    <div class="option-row">
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="removeChineseComma">
+                                <span>清除中文逗号</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="清除文本中的所有中文逗号（，）" aria-label="查看清除中文逗号说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="removeEnglishComma">
+                                <span>清除英文逗号</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="清除文本中的所有英文逗号（,）" aria-label="查看清除英文逗号说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="removeChinesePeriod">
+                                <span>清除中文句号</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="清除文本中的所有中文句号（。）" aria-label="查看清除中文句号说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="removeEnglishPeriod">
+                                <span>清除英文句号</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="清除文本中的所有英文句号（.）" aria-label="查看清除英文句号说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <h3>标点优化</h3>
+                    <div class="option-row">
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="chinesePunctuation">
+                                <span>中文标点优化</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="将英文标点转换为中文标点，如将逗号转换为中文逗号" aria-label="查看中文标点优化说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="englishPunctuation">
+                                <span>英文标点优化</span>
+                            </label>
+                            <button class="help-btn" data-tooltip="将中文标点转换为英文标点，如将中文逗号转换为英文逗号" aria-label="查看英文标点优化说明">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>
@@ -192,7 +277,7 @@
                                 <input type="checkbox" id="removeNumberSymbols">
                                 <span>清理数字+特殊字符</span>
                             </label>
-                            <button class="help-btn" data-tooltip="清除数字与特殊字符的组合" aria-label="查看清理数字+特殊字符说明">
+                            <button class="help-btn" data-tooltip="清除数字与特殊字符的组合（不包括中文和英文的逗号、句号）" aria-label="查看清理数字+特殊字符说明">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>
@@ -251,34 +336,6 @@
                 </div>
 
                 <div class="option-group">
-                    <h3>标点优化</h3>
-                    <div class="option-row">
-                        <div class="option-item">
-                            <label>
-                                <input type="checkbox" id="chinesePunctuation">
-                                <span>中文标点优化</span>
-                            </label>
-                            <button class="help-btn" data-tooltip="将英文标点转换为中文标点，如将逗号转换为中文逗号" aria-label="查看中文标点优化说明">
-                                <svg viewBox="0 0 24 24" width="16" height="16">
-                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="option-item">
-                            <label>
-                                <input type="checkbox" id="englishPunctuation">
-                                <span>英文标点优化</span>
-                            </label>
-                            <button class="help-btn" data-tooltip="将中文标点转换为英文标点，如将中文逗号转换为英文逗号" aria-label="查看英文标点优化说明">
-                                <svg viewBox="0 0 24 24" width="16" height="16">
-                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="option-group">
                     <h3>段落整理</h3>
                     <div class="option-row">
                         <div class="option-item">
@@ -298,6 +355,51 @@
                                 <span>统一段落间距</span>
                             </label>
                             <button class="help-btn" data-tooltip="将段落之间的空行统一为一个空行" aria-label="查看统一段落间距说明">
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <h3>自定义替换</h3>
+                    <div class="option-row">
+                        <div class="option-item replace-inline">
+                            <span class="replace-unit">
+                                <label><input type="checkbox" id="replaceEnter"><span>回车</span></label>
+                                <input type="text" id="replaceEnterTo" class="input" placeholder="替换为">
+                                <button class="help-btn" data-tooltip="支持替换 \\r\\n、\\r、\\n 三种回车符" aria-label="查看替换回车说明">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                    </svg>
+                                </button>
+                            </span>
+                            <span class="replace-unit">
+                                <label><input type="checkbox" id="replaceSpace"><span>空格</span></label>
+                                <input type="text" id="replaceSpaceTo" class="input" placeholder="替换为">
+                                <button class="help-btn" data-tooltip="替换所有空格字符" aria-label="查看替换空格说明">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                    </svg>
+                                </button>
+                            </span>
+                            <span class="replace-unit">
+                                <label><input type="checkbox" id="replaceTab"><span>Tab</span></label>
+                                <input type="text" id="replaceTabTo" class="input" placeholder="替换为">
+                                <button class="help-btn" data-tooltip="替换所有制表符" aria-label="查看替换Tab说明">
+                                    <svg viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                    </svg>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="option-row">
+                        <div class="option-item full-width">
+                            <textarea id="customReplacements" placeholder="输入自定义替换规则，每行一条规则，格式：查找内容=>替换内容&#10;例如：&#10;你好=>Hello&#10;世界=>World" rows="4"></textarea>
+                            <button class="help-btn" data-tooltip="每行输入一条替换规则，使用=>分隔查找内容和替换内容" aria-label="查看自定义替换说明">
                                 <svg viewBox="0 0 24 24" width="16" height="16">
                                     <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                                 </svg>

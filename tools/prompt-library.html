@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>高质量提示词库 - 小铭妙妙屋</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../components.css">
+    <style>
+        body, html {
+            width: 100vw !important;
+            overflow-x: hidden;
+        }
+        .container, .tab-container, .tab-content, main {
+            max-width: 100vw !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f5f7fa;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        body .container {
+            max-width: 100vw !important;
+            margin: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+        .tab-container {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-top: 32px;
+            min-height: 600px;
+            width: 100%;
+        }
+        .tab-header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 0;
+            border-bottom: 1.5px solid var(--border-color);
+            background: #fff;
+            border-radius: 0;
+            overflow-x: auto;
+            width: 100%;
+        }
+        .tab-button {
+            flex: 1 1 0;
+            min-width: 120px;
+            padding: 18px 0;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--secondary-color);
+            background: none;
+            border: none;
+            border-bottom: 2.5px solid transparent;
+            border-radius: 0;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom: 2.5px solid var(--primary-color);
+            background: #fff;
+        }
+        .tab-content {
+            flex: 1;
+            padding: 32px 16px 24px 16px;
+            width: 100%;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .filter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 0;
+            background: none;
+            padding: 0 0 8px 0;
+            border-radius: 0;
+            box-shadow: none;
+            width: 100%;
+        }
+        .category-tabs, .subcategory-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 2px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            justify-content: flex-start;
+            width: 100%;
+            flex-wrap: wrap;
+            padding-left: 24px;
+        }
+        .category-tabs::-webkit-scrollbar, .subcategory-tabs::-webkit-scrollbar { display: none; }
+        .category-tab, .subcategory-tab {
+            padding: 7px 18px;
+            background: #fff;
+            border-radius: 16px;
+            font-size: 1em;
+            color: var(--text-color);
+            cursor: pointer;
+            white-space: nowrap;
+            border: 1.5px solid var(--border-color);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 0 1 auto;
+            min-width: fit-content;
+        }
+        .category-tab:hover, .subcategory-tab:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        .category-tab.active, .subcategory-tab.active {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+        .category-tab-count, .subcategory-tab-count {
+            font-size: 0.85em;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .subcategory-tabs { display: none; margin-top: 6px; }
+        .subcategory-tabs.active { display: flex; }
+        .prompt-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(3, minmax(320px, 1fr));
+            margin-top: 12px;
+            width: 100%;
+            align-items: stretch;
+            padding: 0 8px;
+            justify-items: start;
+            justify-content: start;
+            padding-left: 24px;
+        }
+        .prompt-card {
+            width: 100%;
+            /* max-width: 340px; */
+            /* margin: 0 auto; */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 20px 18px 16px 18px;
+            border: 1px solid #f0f0f0;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .prompt-card:hover {
+            box-shadow: 0 6px 18px rgba(0,0,0,0.10);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .prompt-labels {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .prompt-label {
+            font-size: 0.78em;
+            padding: 2px 10px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+        }
+        .prompt-label.primary { background: var(--primary-color); color: #fff; }
+        .prompt-label.secondary { background: var(--secondary-color); color: #fff; }
+        .prompt-content {
+            color: var(--text-color);
+            font-size: 1em;
+            white-space: pre-line;
+            background: var(--hover-color);
+            padding: 12px 10px;
+            border-radius: 8px;
+            flex-grow: 1;
+        }
+        .prompt-usage {
+            font-size: 0.95em;
+            color: var(--secondary-color);
+            padding: 4px 0 0 0;
+            background: none;
+            border-radius: 0;
+        }
+        .prompt-card .try-btn {
+            margin-top: auto;
+        }
+        @media (max-width: 900px) {
+            .container { 
+                max-width: 100%; 
+                padding: 0;
+            }
+            .tab-container { 
+                min-height: 400px; 
+                margin-top: 24px;
+            }
+            .tab-content {
+                padding: 24px 12px 16px 12px;
+            }
+            .prompt-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); 
+                gap: 16px;
+            }
+        }
+        @media (max-width: 600px) {
+            .container { 
+                padding: 0; 
+            }
+            .tab-container { 
+                margin-top: 10px; 
+                border-radius: 0; 
+                box-shadow: none; 
+            }
+            .tab-header { 
+                border-radius: 0; 
+            }
+            .tab-button { 
+                min-width: 90px; 
+                padding: 12px 0; 
+                font-size: 1em; 
+            }
+            .tab-content {
+                padding: 16px 8px 10px 8px;
+            }
+            .filter-bar { 
+                gap: 8px; 
+                padding: 0 0 4px 0; 
+            }
+            .category-tabs, .subcategory-tabs { 
+                gap: 4px; 
+                padding: 4px;
+            }
+            .category-tab, .subcategory-tab { 
+                padding: 5px 10px; 
+                font-size: 0.95em;
+                flex: 1 1 auto;
+                min-width: 0;
+                max-width: calc(50% - 4px);
+            }
+            .prompt-grid { 
+                grid-template-columns: 1fr; 
+                gap: 12px; 
+                padding: 0 4px;
+            }
+            .prompt-card { 
+                padding: 14px 8px 10px 8px; 
+                border-radius: 8px; 
+            }
+            .prompt-label { 
+                font-size: 0.75em; 
+                padding: 2px 7px; 
+            }
+            .prompt-content { 
+                font-size: 0.97em; 
+                padding: 8px 6px; 
+                border-radius: 6px; 
+            }
+        }
+        @media (max-width: 768px) {
+            .category-tabs,
+            .subcategory-tabs,
+            .prompt-grid {
+                padding-left: 12px;
+            }
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            padding: 0 32px;
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1.5px solid #e0e0e0;
+        }
+        .home-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1em;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .home-link:hover {
+            background: var(--hover-color);
+        }
+        .title-section {
+            flex: 1;
+            text-align: center;
+        }
+        .title-section .title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .title-section .subtitle {
+            font-size: 0.95em;
+            color: var(--secondary-color);
+            margin: 0;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+        #themeToggle {
+            background: var(--hover-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, box-shadow 0.2s;
+            font-size: 1.2em;
+        }
+        #themeToggle:hover {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(74,144,226,0.12);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="../index.html" class="home-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path d="M9 22V12h6v10"/>
+            </svg>
+            <span>首页</span>
+        </a>
+        <div class="title-section">
+            <h1 class="title">高质量提示词库</h1>
+            <p class="subtitle">精选AI提示词模板</p>
+        </div>
+        <button class="btn btn-secondary" id="themeToggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+        </button>
+    </nav>
+
+    <div class="container">
+        <main>
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-button active" data-tab="browse">看一看</button>
+                    <button class="tab-button" data-tab="try">试一试</button>
+                </div>
+                
+                <div class="tab-content active" id="browse">
+                    <div class="filter-bar">
+                        <div class="category-tabs" id="primaryTabs"></div>
+                        <div class="subcategory-tabs" id="secondaryTabs"></div>
+                        <div id="promptLibrary"></div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="try">
+                    <section class="ai-section card">
+                        <h2 class="title title-h2">AI 助手</h2>
+                        <div class="ai-container">
+                            <div class="input-area">
+                                <textarea id="aiInput" class="input" placeholder="请输入您的问题..." rows="6"></textarea>
+                                <button id="sendToAI" class="btn btn-primary">
+                                    <svg viewBox="0 0 24 24" width="20" height="20">
+                                        <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                                    </svg>
+                                    发送到AI
+                                </button>
+                            </div>
+                            <div class="output-area">
+                                <textarea id="aiOutput" class="input" placeholder="AI的回答将显示在这里..." rows="6" readonly></textarea>
+                                <button id="copyAIOutput" class="btn btn-secondary">
+                                    <svg viewBox="0 0 24 24" width="20" height="20">
+                                        <path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                    </svg>
+                                    复制结果
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2024 小铭妙妙屋 - 让生活更简单</p>
+        </footer>
+    </div>
+
+    <script>
+        (function(){
+            // 数据结构
+            const promptLibrary = {
+                conversation: { title: "对话", description: "高质量对话类AI提示词，适用于各种专业场景和工作需求", subcategories: {
+                    office: { title: "办公工具", prompts: [
+                        { id: "office_email", content: "请帮我写一封商务邮件，主题是[项目进度汇报]。要求语气专业，条理清晰，包含项目现状、遇到的挑战和下一步计划。", usage: "适合撰写专业商务邮件" },
+                        { id: "office_ppt", content: "我需要制作一份产品发布会的演示PPT大纲，产品是一款新的智能手机APP。请提供详细的结构建议和关键内容点。", usage: "适合PPT内容策划和大纲制作" },
+                        { id: "office_report", content: "请帮我优化这份工作周报的结构和表达：[在此粘贴您的周报内容]", usage: "适合工作汇报文档优化" }
+                    ]},
+                    career: { title: "职场经验", prompts: [
+                        { id: "career_promotion", content: "我想在下周的述职报告中争取晋升机会，请帮我梳理过去一年的工作亮点和贡献，并提供表达建议。", usage: "适合职业发展规划和晋升准备" },
+                        { id: "career_conflict", content: "我最近和同事在项目分工上产生了分歧，请提供一些专业的沟通技巧和解决方案。", usage: "适合处理职场人际关系" },
+                        { id: "career_feedback", content: "作为团队负责人，我需要对一位下属的工作表现提出改进建议，请帮我组织语言，既要指出问题又要保持积极正面。", usage: "适合管理者给予反馈" }
+                    ]},
+                    interview: { title: "模拟面试", prompts: [
+                        { id: "interview_tech", content: "请模拟一场技术面试官，围绕Python后端开发岗位进行提问。要包含算法、系统设计和项目经验等方面。", usage: "适合技术岗位面试准备" },
+                        { id: "interview_hr", content: "请模拟HR面试官，问一些常见的行为问题和情景问题，比如职业规划、团队协作等。", usage: "适合HR面试准备" },
+                        { id: "interview_salary", content: "请指导我如何在面试中进行薪资谈判，包括如何回答期望薪资、如何争取更好的待遇等。", usage: "适合薪资谈判准备" }
+                    ]},
+                    writing: { title: "写作辅助", prompts: [
+                        { id: "writing_proposal", content: "请帮我编写一份项目提案，主题是[您的项目名称]。需要包含项目背景、目标、实施计划和预期效果。", usage: "适合商业提案写作" },
+                        { id: "writing_blog", content: "我想写一篇关于[主题]的技术博客，请帮我梳理文章结构和关键内容点。", usage: "适合专业文章写作" },
+                        { id: "writing_social", content: "请帮我优化这段产品推广文案，使其更有吸引力：[在此粘贴您的文案]", usage: "适合营销文案优化" }
+                    ]},
+                    learning: { title: "学习助手", prompts: [
+                        { id: "learning_explain", content: "请用通俗易懂的方式解释[概念]，最好能举一些生活中的例子。", usage: "适合概念理解和知识学习" },
+                        { id: "learning_plan", content: "我想学习[技能]，请帮我制定一个为期3个月的学习计划，包含具体的学习路径和阶段性目标。", usage: "适合学习规划" },
+                        { id: "learning_summary", content: "请帮我总结这篇文章的要点：[在此粘贴文章内容]", usage: "适合内容归纳和总结" }
+                    ]}
+                }},
+                drawing: { title: "绘画", description: "AI绘画高质量提示词，适用于风格画、头像画等多种场景", subcategories: {
+                    style: { title: "风格画", prompts: [
+                        { id: "draw_anime", content: "画一幅日系动漫风格的少女，背景为樱花树，色彩明亮。", usage: "适合生成动漫风格作品" },
+                        { id: "draw_cyberpunk", content: "请画一幅赛博朋克风格的城市夜景，充满霓虹灯和未来感。", usage: "适合生成科幻风格画作" }
+                    ]},
+                    avatar: { title: "头像画", prompts: [
+                        { id: "avatar_girl", content: "生成一个可爱的卡通女孩头像，蓝色短发，大眼睛，微笑。", usage: "适合社交头像" },
+                        { id: "avatar_cat", content: "画一个Q版猫咪头像，表情呆萌，背景为淡粉色。", usage: "适合宠物头像" },
+                        { id: "avatar_boy", content: "生成一个帅气的男生头像，黑色短发，阳光笑容。", usage: "适合男性社交头像" }
+                    ]}
+                }}
+            };
+
+            // DOM缓存
+            const $ = sel => document.querySelector(sel);
+            const primaryTabs = $('#primaryTabs');
+            const secondaryTabs = $('#secondaryTabs');
+            const promptContainer = $('#promptLibrary');
+
+            // Tab切换（事件委托）
+            document.querySelector('.tab-header').onclick = e => {
+                const btn = e.target.closest('.tab-button');
+                if (!btn) return;
+                document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(c => {
+                    if (c.id === btn.dataset.tab) {
+                        c.classList.add('active');
+                    } else {
+                        c.classList.remove('active');
+                    }
+                });
+            };
+
+            // 分类渲染与事件
+            function renderPrimaryTabs() {
+                let html = `<div class="category-tab active" data-value="all">全部 <span class="category-tab-count">${getTotalPrompts()}</span></div>`;
+                for(const [k,v] of Object.entries(promptLibrary)){
+                    html += `<div class="category-tab" data-value="${k}">${v.title}<span class="category-tab-count">${getCategoryPromptCount(k)}</span></div>`;
+                }
+                primaryTabs.innerHTML = html;
+            }
+            function renderSecondaryTabs(primary) {
+                if(primary==='all'){ secondaryTabs.classList.remove('active'); secondaryTabs.innerHTML=''; return; }
+                let html = `<div class="subcategory-tab active" data-value="all">全部 <span class="subcategory-tab-count">${getCategoryPromptCount(primary)}</span></div>`;
+                const subs = promptLibrary[primary].subcategories;
+                for(const [k,v] of Object.entries(subs)){
+                    html += `<div class="subcategory-tab" data-value="${k}">${v.title}<span class="subcategory-tab-count">${v.prompts.length}</span></div>`;
+                }
+                secondaryTabs.innerHTML = html;
+                secondaryTabs.classList.add('active');
+            }
+            // 分类事件委托
+            primaryTabs.onclick = e => {
+                const tab = e.target.closest('.category-tab');
+                if(!tab) return;
+                primaryTabs.querySelectorAll('.category-tab').forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                renderSecondaryTabs(tab.dataset.value);
+                renderPromptLibrary();
+            };
+            secondaryTabs.onclick = e => {
+                const tab = e.target.closest('.subcategory-tab');
+                if(!tab) return;
+                secondaryTabs.querySelectorAll('.subcategory-tab').forEach(t=>t.classList.remove('active'));
+                tab.classList.add('active');
+                renderPromptLibrary();
+            };
+            // 统计
+            function getTotalPrompts(){
+                let c=0;for(const cat of Object.values(promptLibrary))for(const sub of Object.values(cat.subcategories))c+=sub.prompts.length;return c;
+            }
+            function getCategoryPromptCount(key){
+                let c=0;const cat=promptLibrary[key];for(const sub of Object.values(cat.subcategories))c+=sub.prompts.length;return c;
+            }
+            // 渲染提示词
+            function renderPromptLibrary(){
+                const {primary,secondary} = getSelectedFilters();
+                let html = '';
+                for(const [catKey,catData] of Object.entries(promptLibrary)){
+                    if(primary!=='all'&&primary!==catKey)continue;
+                    for(const [subKey,subData] of Object.entries(catData.subcategories)){
+                        if(secondary!=='all'&&secondary!==subKey)continue;
+                        html += '<div class="prompt-grid">';
+                        for(const prompt of subData.prompts){
+                            html += `<div class="card prompt-card"><div class="prompt-labels"><span class="prompt-label primary">${catData.title}</span><span class="prompt-label secondary">${subData.title}</span></div><div class="prompt-content">${prompt.content}</div><div class="prompt-usage">${prompt.usage}</div><button class='btn btn-primary try-btn' style='margin-top:8px;'>去试试</button></div>`;
+                        }
+                        html += '</div>';
+                    }
+                }
+                promptContainer.innerHTML = html;
+                // 卡片点击事件委托
+                promptContainer.onclick = e => {
+                    const btn = e.target.closest('.try-btn');
+                    if(!btn) return;
+                    const card = btn.closest('.prompt-card');
+                    if(!card) return;
+                    const content = card.querySelector('.prompt-content').textContent;
+                    document.querySelector('[data-tab="try"]').click();
+                    document.getElementById('aiInput').value = content;
+                };
+            }
+            function getSelectedFilters(){
+                const primary = primaryTabs.querySelector('.category-tab.active')?.dataset.value||'all';
+                const secondary = secondaryTabs.querySelector('.subcategory-tab.active')?.dataset.value||'all';
+                return {primary,secondary};
+            }
+            // AI功能
+            (function(){
+                const sendBtn = document.getElementById('sendToAI');
+                const inputArea = document.getElementById('aiInput');
+                const outputArea = document.getElementById('aiOutput');
+                const copyBtn = document.getElementById('copyAIOutput');
+                let loading = false;
+                sendBtn.onclick = async function(){
+                    if(loading) return;
+                    const inputText = inputArea.value.trim();
+                    if(!inputText){ outputArea.value='请输入文本'; return; }
+                    outputArea.value='正在处理...'; loading=true;
+                    try{
+                        const res = await fetch('https://api.deepseek.com/chat/completions', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer sk_eaRMJNKZUJXrY-DQW9IB83vRgkrkITlP9fZiEocOHoE'
+                            },
+                            body: JSON.stringify({
+                                model: "deepseek-reasoner",
+                                messages: [
+                                    { role: "system", content: "You are a helpful assistant." },
+                                    { role: "user", content: inputText }
+                                ],
+                                stream: false
+                            })
+                        });
+                        if(!res.ok) throw new Error('API调用失败: '+res.statusText);
+                        const data = await res.json();
+                        outputArea.value = data.choices?.[0]?.message?.content || '未收到有效响应';
+                    }catch(e){
+                        outputArea.value = '错误: '+e.message;
+                    }
+                    loading=false;
+                };
+                copyBtn.onclick = function(){
+                    const output = outputArea.value;
+                    if(!output){ alert('没有可复制的内容'); return; }
+                    navigator.clipboard.writeText(output).then(()=>{
+                        const orig = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>已复制';
+                        setTimeout(()=>{copyBtn.innerHTML=orig;},1500);
+                    });
+                };
+            })();
+            // 主题切换
+            (function(){
+                const themeToggle = document.getElementById('themeToggle');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+                let isDark = localStorage.getItem('theme')==='dark' || (!localStorage.getItem('theme') && prefersDark.matches);
+                document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+                themeToggle.textContent = isDark ? '☀️' : '🌙';
+                themeToggle.onclick = function(){
+                    isDark = document.documentElement.getAttribute('data-theme')==='dark';
+                    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+                    themeToggle.textContent = isDark ? '🌙' : '☀️';
+                };
+            })();
+            // 初始化
+            renderPrimaryTabs();
+            renderSecondaryTabs('all');
+            renderPromptLibrary();
+        })();
+    </script>
+</body>
+</html> 
